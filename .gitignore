@@ -5,6 +5,14 @@
 *.so
 *.dylib
 
+# Env files
+.env
+
+# Idea project
+modules.xml
+.idea
+/.idea
+
 # Test binary, built with `go test -c`
 *.test
 

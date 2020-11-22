@@ -1,19 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"time"
 
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 func main() {
-	fmt.Println("Token:", os.Getenv("bot_token"))
-
 	bot, err := tb.NewBot(tb.Settings{
-		Token: "asd",
+		Token: config.botToken,
 		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
 	})
 	if err != nil {
