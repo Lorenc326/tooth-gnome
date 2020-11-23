@@ -16,6 +16,13 @@ func main() {
 		log.Fatal(err)
 	}
 
+	bot.Handle("/start", func(m *tb.Message) {
+		if !m.Private() {
+			return
+		}
+		bot.Send(m.Sender, "Hello there!\nI'll make sure your \U0001F9B7 are washed in time, just set your wake up/sleep hours. (it works better then alarm, trust me)")
+	})
+
 	bot.Handle(tb.OnText, func(m *tb.Message) {
 		log.Println(m.Text)
 	})
