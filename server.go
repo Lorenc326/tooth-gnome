@@ -4,6 +4,8 @@ import (
 	"log"
 	"time"
 
+	dbUtils "github.com/Lorenc326/tooth-gnome/db"
+
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -26,6 +28,11 @@ func main() {
 	bot.Handle(tb.OnText, func(m *tb.Message) {
 		log.Println(m.Text)
 	})
+
+	_, err = dbUtils.ConnectDB(config.postgresUrl)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	bot.Start()
 }

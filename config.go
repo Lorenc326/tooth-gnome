@@ -8,6 +8,7 @@ import (
 
 type EnvConfig struct {
 	botToken string
+	postgresUrl string
 }
 
 var config = EnvConfig{}
@@ -17,4 +18,5 @@ func init() {
 		log.Fatal(err)
 	}
 	config.botToken = os.Getenv("bot_token")
+	config.postgresUrl = os.Getenv("postgres_url")
 }
