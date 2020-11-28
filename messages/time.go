@@ -12,6 +12,7 @@ import (
 
 const timeMessage = "👍"
 const errorTimeMessage = "⚠️Invalid input ⚠\nTry such format \"hh:mm hh:mm GMT Timezone\", for example \"09:00 21:00 +02\"."
+const hourTimeFormat = "15:04Z07"
 
 func debugTimeHandler(m *tb.Message, bot *tb.Bot) {
 	if err := recover(); err != nil {
@@ -45,8 +46,8 @@ func GetTimeHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Message) {
 
 		user := &orm.User{
 			ID:          m.Sender.ID,
-			MorningTime: start.String(),
-			EveningTime: end.String(),
+			MorningTime: start.Format(hourTimeFormat),
+			EveningTime: end.Format(hourTimeFormat),
 		}
 		// TODO: do smth in case of failed save
 		user.SetReminders(db)
