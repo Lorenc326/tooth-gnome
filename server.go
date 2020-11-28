@@ -7,6 +7,7 @@ import (
 	"github.com/Lorenc326/tooth-gnome/messages"
 	"github.com/Lorenc326/tooth-gnome/orm"
 
+	cron "github.com/robfig/cron/v3"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -15,6 +16,8 @@ func handleFatal() {
 		log.Fatal(err)
 	}
 }
+
+var watcher = cron.New()
 
 func main() {
 	defer handleFatal()
@@ -30,8 +33,11 @@ func main() {
 	db := orm.ConnectDB(config.postgresUrl)
 	defer db.Close()
 
+	watcher.AddFunc("* * * * *", messages.GetReminderWatcher(db, bot))
+	watcher.Start()
+	defer watcher.Stop()
+
 	bot.Handle("/start", messages.GetStartHandler(db, bot))
 	bot.Handle("/time", messages.GetTimeHandler(db, bot))
-
 	bot.Start()
 }
