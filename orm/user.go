@@ -25,7 +25,20 @@ func (u *User) InsertIfNotExist(db *pg.DB) (bool, error) {
 }
 
 func (u *User) SetReminders(db *pg.DB) (pg.Result, error) {
-	return db.Model(u).Column("morning_time").Column("evening_time").WherePK().Update()
+	return db.Model(u).
+		Column("morning_time").
+		Column("evening_time").
+		WherePK().
+		Update()
+}
+
+func (_ *User) GetUsersToRemind(db *pg.DB, users *[]User, now string, limit int) error {
+	return db.Model(users).
+		Column("id").
+		Where("morning_time = ?", now).
+		WhereOr("evening_time = ?", now).
+		Limit(limit).
+		Select()
 }
 
 func (u *User) String() string {
