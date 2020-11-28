@@ -20,6 +20,14 @@ func (u *User) initiateTable(db *pg.DB) error {
 	return db.Model(u).CreateTable(&orm.CreateTableOptions{IfNotExists: true})
 }
 
+func (u *User) InsertIfNotExist(db *pg.DB) (bool, error) {
+	return db.Model(u).SelectOrInsert()
+}
+
+func (u *User) SetReminders(db *pg.DB) (pg.Result, error) {
+	return db.Model(u).Column("morning_time").Column("evening_time").WherePK().Update()
+}
+
 func (u *User) String() string {
 	return fmt.Sprintf("User<id=%d lng=%s created_at=%s progress=%d>", u.ID, u.Lng, u.CreatedAt, u.Progress)
 }
