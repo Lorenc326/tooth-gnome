@@ -31,6 +31,7 @@ func main() {
 	defer db.Close()
 
 	bot.Handle("/start", messages.GetStartHandler(db, bot))
+	bot.Handle("/time", messages.GetTimeHandler(db, bot))
 
 	bot.Start()
 }

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const message = "Hello there!\nI'll make sure your \U0001F9B7 are washed in time, " +
+const introMessage = "Hello there!\nI'll make sure your \U0001F9B7 are washed in time, " +
 	"just set your wake up/sleep hours. (it works better then alarm, trust me)"
 
 func GetStartHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Message) {
@@ -21,8 +21,8 @@ func GetStartHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Message) {
 			Lng:       m.Sender.LanguageCode,
 			CreatedAt: time.Now().Format(time.RFC3339),
 		}
-		db.Model(user).SelectOrInsert()
+		user.InsertIfNotExist(db)
 
-		bot.Send(m.Sender, message)
+		bot.Send(m.Sender, introMessage)
 	}
 }
