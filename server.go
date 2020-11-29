@@ -40,6 +40,7 @@ func main() {
 
 	bot.Handle("/start", messages.GetStartHandler(db, bot))
 	bot.Handle("/time", messages.GetTimeHandler(db, bot))
+	bot.Handle("/progress", messages.GetProgressHandler(db, bot))
 	bot.Handle(approveBtn, messages.GetApprovalHandler(db, bot))
 	bot.Start()
 }

@@ -18,7 +18,7 @@ func BuildApprovalMarkup() (*tb.ReplyMarkup, *tb.Btn) {
 
 const maxProgress = 42
 
-func GetApprovalHandler(db *pg.DB, bot *tb.Bot) func(c *tb.Callback) {
+func GetApprovalHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Callback) {
 	return func(c *tb.Callback) {
 		messageSent := time.Unix(c.Message.Unixtime, 0)
 		approvalDeadline := messageSent.Add(3 * time.Hour)
@@ -31,7 +31,7 @@ func GetApprovalHandler(db *pg.DB, bot *tb.Bot) func(c *tb.Callback) {
 		}
 
 		user := orm.User{ID: c.Sender.ID}
-		user.GetOne(db)
+		user.GetTraining(db)
 		if user.Progress < maxProgress {
 			user.Progress += 1
 		}
@@ -41,6 +41,6 @@ func GetApprovalHandler(db *pg.DB, bot *tb.Bot) func(c *tb.Callback) {
 		bot.Respond(c, &tb.CallbackResponse{
 			Text: "Nice!",
 		})
-		bot.Edit(c.Message, "👏 You're doing great! 👏\nProgress was updated, successfully")
+		bot.Edit(c.Message, "👏 You're doing great! 👏\nCheck out your /progress")
 	}
 }
