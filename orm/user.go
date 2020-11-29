@@ -33,9 +33,14 @@ func (u *User) SetReminders(db *pg.DB) (pg.Result, error) {
 		Update()
 }
 
+func (u *User) GetOne(db *pg.DB) error {
+	return db.Model(u).
+		WherePK().
+		Select()
+}
 func (u *User) Train(db *pg.DB) (pg.Result, error) {
 	return db.Model(u).
-		Column("last_trained").
+		Column("last_trained", "progress").
 		WherePK().
 		Update()
 }

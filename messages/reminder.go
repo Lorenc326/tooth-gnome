@@ -8,10 +8,11 @@ import (
 	"time"
 )
 
-const reminderMessage = "Hello! Reminding you to brush your teeth."
+const reminderMessage = "Hello! Time to brush your teeth 😉."
+
 const bunchSize = 100
 
-func GetReminderWatcher(db *pg.DB, bot *tb.Bot) func() {
+func GetReminderWatcher(db *pg.DB, bot *tb.Bot, approvalMarkup *tb.ReplyMarkup) func() {
 	return func() {
 		now := time.Now().Round(time.Minute).Format(reminderTimeFormat)
 		userModel := new(orm.User)
@@ -27,7 +28,7 @@ func GetReminderWatcher(db *pg.DB, bot *tb.Bot) func() {
 				return
 			}
 			for _, u := range users {
-				bot.Send(u, reminderMessage)
+				bot.Send(u, reminderMessage, approvalMarkup)
 				processed += 1
 			}
 		}

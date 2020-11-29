@@ -33,11 +33,13 @@ func main() {
 	db := orm.ConnectDB(config.postgresUrl)
 	defer db.Close()
 
-	watcher.AddFunc("* * * * *", messages.GetReminderWatcher(db, bot))
+	approveMark, approveBtn := messages.BuildApprovalMarkup()
+	watcher.AddFunc("* * * * *", messages.GetReminderWatcher(db, bot, approveMark))
 	watcher.Start()
 	defer watcher.Stop()
 
 	bot.Handle("/start", messages.GetStartHandler(db, bot))
 	bot.Handle("/time", messages.GetTimeHandler(db, bot))
+	bot.Handle(approveBtn, messages.GetApprovalHandler(db, bot))
 	bot.Start()
 }
