@@ -49,6 +49,11 @@ func parseHourStamp(hourStamp string) (*time.Time, error) {
 	return &parsed, nil
 }
 
+// define as a package variable so it can be stubbed in tests
+var timeNow = func() time.Time {
+	return time.Now()
+}
+
 // get amount of points that should be reduced from progress
 // happens when user skips reminders
 // keep all in UTC to have unified locations
