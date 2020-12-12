@@ -22,7 +22,10 @@ func (u *User) initiateTable(db *pg.DB) error {
 }
 
 func (u *User) InsertIfNotExist(db *pg.DB) (bool, error) {
-	return db.Model(u).SelectOrInsert()
+	return db.Model(u).
+		WherePK().
+		OnConflict("DO NOTHING").
+		SelectOrInsert()
 }
 
 func (u *User) SetReminders(db *pg.DB) (pg.Result, error) {

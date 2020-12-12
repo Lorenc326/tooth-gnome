@@ -8,7 +8,7 @@ import (
 )
 
 const progressMessageHeader = "📈 Your habit progress 📈\n" +
-	"Note: it will be decreased if you skip reminders"
+	"Note, it will be decreased if you skip reminders."
 
 func buildStatisticsMessage(progress int16, maxProgress int16) string {
 	message := make([]string, 200)
