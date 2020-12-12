@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Lorenc326/tooth-gnome/locales"
 	"log"
 	"time"
 
@@ -21,6 +22,10 @@ var watcher = cron.New()
 
 func main() {
 	defer handleFatal()
+
+	if err := locales.PreloadLocales("locales/assets"); err != nil {
+		log.Fatal(err)
+	}
 
 	bot, err := tb.NewBot(tb.Settings{
 		Token:  config.botToken,
