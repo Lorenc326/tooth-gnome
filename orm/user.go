@@ -35,7 +35,7 @@ func (u *User) SetReminders(db *pg.DB) (pg.Result, error) {
 
 func (u *User) GetTraining(db *pg.DB) error {
 	return db.Model(u).
-		Column("last_trained", "progress").
+		Column("last_trained", "progress", "morning_time", "evening_time").
 		WherePK().
 		Select()
 }

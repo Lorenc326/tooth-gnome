@@ -32,6 +32,16 @@ func GetApprovalHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Callback) {
 
 		user := orm.User{ID: c.Sender.ID}
 		user.GetTraining(db)
+
+		reduceProgress := getSkippedProgress(&user)
+		if reduceProgress > 0 {
+			if user.Progress-reduceProgress <= 0 {
+				user.Progress = 0
+			} else {
+				user.Progress = user.Progress - reduceProgress
+			}
+		}
+
 		if user.Progress < maxProgress {
 			user.Progress += 1
 		}
