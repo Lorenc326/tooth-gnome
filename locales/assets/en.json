@@ -1,3 +1,15 @@
 {
-  "hello": "world"
+  "done": "Done",
+  "tooLate": "Oh no! Its too late!",
+  "reminderIsExpired": "⌛ Oh! Reminder is already expired! ⌛\nYou should approve it within 3hours, next time",
+  "nice": "Nice!",
+  "youDoingGreat": "👏 You're doing great! 👏\nCheck out your /progress",
+  "progressHeader": "📈 Your habit progress 📈\nNote, it will be decreased if you skip reminders.",
+  "week1": "Week 1:",
+  "week2": "Week 2:",
+  "week3": "Week 3:",
+  "timeToBrush": "Hello! Time to brush your teeth 😉.",
+  "greetingMessage": "👋 Hello there!\n\nDevelop a habit to brush \uD83E\uDDB7 in 21 days! I will send you reminders twice a day, you can also check your progress any time.\n\nType when you would like to receive reminders +timezone.\nExample \"/time 09:00 21:00 +02 \"",
+  "invalidInputTime": "⚠️Invalid input ⚠\nTry such format \"hh:mm hh:mm GMT Timezone\", for example \"09:00 21:00 +02\".",
+  "invalidInputLanguage": "😕 Wrong code!\nSuch languages are supported: uk 🇺🇦, en 🏴󠁧󠁢󠁥󠁮󠁧󠁿󠁿, ru 🇷🇺"
 }
