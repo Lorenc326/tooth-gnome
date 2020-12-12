@@ -1,25 +1,23 @@
 package messages
 
 import (
+	"github.com/Lorenc326/tooth-gnome/locales"
 	"github.com/Lorenc326/tooth-gnome/orm"
 	"math"
 	"strings"
 	"time"
 )
 
-const progressMessageHeader = "📈 Your habit progress 📈\n" +
-	"Note, it will be decreased if you skip reminders."
-
-func buildStatisticsMessage(progress int16, maxProgress int16) string {
+func buildStatisticsMessage(lng string, progress int16, maxProgress int16) string {
 	message := make([]string, 200)
 	for i := int16(0); i < maxProgress; i += 2 {
 		day := i/2 + 1
 		if day == 1 {
-			message = append(message, "\n\nWeek 1:")
+			message = append(message, "\n\n"+locales.Translate(lng, "week1"))
 		} else if day == 8 {
-			message = append(message, "\n\nWeek 2:")
+			message = append(message, "\n\n"+locales.Translate(lng, "week2"))
 		} else if day == 15 {
-			message = append(message, "\n\nWeek 3:")
+			message = append(message, "\n\n"+locales.Translate(lng, "week3"))
 		}
 		// two points == 1 day
 		morningDone := progress >= i+1

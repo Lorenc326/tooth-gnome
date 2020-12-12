@@ -1,6 +1,7 @@
 package messages
 
 import (
+	"github.com/Lorenc326/tooth-gnome/locales"
 	"github.com/Lorenc326/tooth-gnome/orm"
 	"github.com/go-pg/pg/v10"
 	tb "gopkg.in/tucnak/telebot.v2"
@@ -20,18 +21,18 @@ const maxProgress = 42
 
 func GetApprovalHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Callback) {
 	return func(c *tb.Callback) {
+		user := orm.User{ID: c.Sender.ID}
+		user.GetTraining(db)
+
 		messageSent := time.Unix(c.Message.Unixtime, 0)
 		approvalDeadline := messageSent.Add(3 * time.Hour)
 		if time.Now().After(approvalDeadline) {
 			bot.Respond(c, &tb.CallbackResponse{
-				Text: "Oh no! Its too late!",
+				Text: locales.Translate(user.Lng, "tooLate"),
 			})
-			bot.Edit(c.Message, "⌛ Oh! Reminder is already expired! ⌛\nYou should approve it within 3hours, next time")
+			bot.Edit(c.Message, locales.Translate(user.Lng, "reminderIsExpired"))
 			return
 		}
-
-		user := orm.User{ID: c.Sender.ID}
-		user.GetTraining(db)
 
 		reduceProgress := getSkippedProgress(&user)
 		if reduceProgress > 0 {
@@ -49,8 +50,8 @@ func GetApprovalHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Callback) {
 		user.Train(db)
 
 		bot.Respond(c, &tb.CallbackResponse{
-			Text: "Nice!",
+			Text: locales.Translate(user.Lng, "nice"),
 		})
-		bot.Edit(c.Message, "👏 You're doing great! 👏\nCheck out your /progress")
+		bot.Edit(c.Message, locales.Translate(user.Lng, "youDoingGreat"))
 	}
 }

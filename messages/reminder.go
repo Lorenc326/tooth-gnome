@@ -1,14 +1,13 @@
 package messages
 
 import (
+	"github.com/Lorenc326/tooth-gnome/locales"
 	"github.com/Lorenc326/tooth-gnome/orm"
 	"github.com/go-pg/pg/v10"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"log"
 	"time"
 )
-
-const reminderMessage = "Hello! Time to brush your teeth 😉."
 
 const bunchSize = 100
 
@@ -28,7 +27,7 @@ func GetReminderWatcher(db *pg.DB, bot *tb.Bot, approvalMarkup *tb.ReplyMarkup) 
 				return
 			}
 			for _, u := range users {
-				bot.Send(u, reminderMessage, approvalMarkup)
+				bot.Send(u, locales.Translate(u.Lng, "timeToBrush"), approvalMarkup)
 				processed += 1
 			}
 		}

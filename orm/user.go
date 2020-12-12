@@ -36,9 +36,16 @@ func (u *User) SetReminders(db *pg.DB) (pg.Result, error) {
 		Update()
 }
 
+func (u *User) UpdateLng(db *pg.DB) (pg.Result, error) {
+	return db.Model(u).
+		Column("lng").
+		WherePK().
+		Update()
+}
+
 func (u *User) GetTraining(db *pg.DB) error {
 	return db.Model(u).
-		Column("last_trained", "progress", "morning_time", "evening_time").
+		Column("last_trained", "progress", "morning_time", "evening_time", "lng").
 		WherePK().
 		Select()
 }
@@ -52,6 +59,7 @@ func (u *User) Train(db *pg.DB) (pg.Result, error) {
 func (_ *User) GetUsersToRemind(db *pg.DB, users *[]User, now string, offset int, limit int) error {
 	return db.Model(users).
 		Column("id").
+		Column("lng").
 		Where("morning_time = ?", now).
 		WhereOr("evening_time = ?", now).
 		Offset(offset).
