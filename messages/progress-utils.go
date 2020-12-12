@@ -59,20 +59,20 @@ func getSkippedProgress(user *orm.User) int16 {
 	}
 	lastTrainedBase, _ := time.Parse(time.RFC3339, user.LastTrained)
 	lastTrained := lastTrainedBase.UTC()
-	now := time.Now().UTC()
+	now := timeNow().UTC()
 	morning, _ := parseHourStamp(user.MorningTime)
 	evening, _ := parseHourStamp(user.EveningTime)
 
 	// we don't care about morning or evening, we need lower and upper hour bounds
 	// if after utc formatting evening hour is lower - we swap them
-	if evening.Hour() <= morning.Hour() && evening.Minute() <= morning.Minute() {
+	if evening.Hour() < morning.Hour() || (evening.Hour() == morning.Hour() && evening.Minute() <= morning.Minute()) {
 		morning, evening = evening, morning
 	}
 
 	// daytime vs nighttime cases
 	var checkReminder time.Time
-	afterMorning := now.Hour() >= morning.Hour() && now.Minute() >= morning.Minute()
-	beforeEvening := now.Hour() < evening.Hour() && now.Minute() < evening.Minute()
+	afterMorning := now.Hour() > morning.Hour() || (now.Hour() == morning.Hour() && now.Minute() >= morning.Minute())
+	beforeEvening := now.Hour() < evening.Hour() || (now.Hour() == evening.Hour() && now.Minute() < evening.Minute())
 	if !afterMorning && beforeEvening {
 		checkReminder = time.
 			Date(now.Year(), now.Month(), now.Day(), morning.Hour(), morning.Minute(), 0, 0, time.UTC).
