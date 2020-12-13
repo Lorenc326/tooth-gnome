@@ -23,6 +23,7 @@ var watcher = cron.New()
 func main() {
 	defer handleFatal()
 
+	log.Println("Starting server")
 	if err := locales.PreloadLocales("locales/assets"); err != nil {
 		log.Fatal(err)
 	}
@@ -35,11 +36,13 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Println("Connecting DB")
 	db := orm.ConnectDB(config.postgresUrl)
 	defer db.Close()
 
 	approveMark, approveBtn := messages.BuildApprovalMarkup()
 	watcher.AddFunc("* * * * *", messages.GetReminderWatcher(db, bot, approveMark))
+	log.Println("Starting watcher")
 	watcher.Start()
 	defer watcher.Stop()
 
@@ -48,5 +51,6 @@ func main() {
 	bot.Handle("/progress", messages.GetProgressHandler(db, bot))
 	bot.Handle("/language", messages.GetLanguageHandler(db, bot))
 	bot.Handle(approveBtn, messages.GetApprovalHandler(db, bot))
+	log.Println("Starting bot")
 	bot.Start()
 }

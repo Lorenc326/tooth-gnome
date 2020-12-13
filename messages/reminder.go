@@ -14,6 +14,7 @@ const bunchSize = 100
 func GetReminderWatcher(db *pg.DB, bot *tb.Bot, approvalMarkup *tb.ReplyMarkup) func() {
 	return func() {
 		now := time.Now().Round(time.Minute).Format(reminderTimeFormat)
+		log.Println("Reminder watcher", now)
 		userModel := new(orm.User)
 
 		firstLoop := true
@@ -26,6 +27,7 @@ func GetReminderWatcher(db *pg.DB, bot *tb.Bot, approvalMarkup *tb.ReplyMarkup) 
 				log.Println(err)
 				return
 			}
+			log.Println("Reminder users", users)
 			for _, u := range users {
 				bot.Send(u, locales.Translate(u.Lng, "timeToBrush"), approvalMarkup)
 				processed += 1
