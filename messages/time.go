@@ -12,7 +12,7 @@ import (
 )
 
 const timeMessage = "👍"
-const reminderTimeFormat = "15:04Z07"
+const reminderTimeFormat = "15:04-07"
 
 func debugTimeHandler(m *tb.Message, bot *tb.Bot) {
 	if err := recover(); err != nil {
@@ -42,15 +42,15 @@ func GetTimeHandler(db *pg.DB, bot *tb.Bot) func(_ *tb.Message) {
 		layout := "15:04 MST -07"
 		start, err1 := time.Parse(layout, fmt.Sprintf("%s GMT %s", times[0], zoneOffset))
 		end, err2 := time.Parse(layout, fmt.Sprintf("%s GMT %s", times[1], zoneOffset))
-		if err1 != nil || err2 != nil || start.After(end) {
+		if err1 != nil || err2 != nil || start == end {
 			bot.Send(m.Sender, locales.Translate(user.Lng, "invalidInputTime"))
 			return
 		}
 
 		user = &orm.User{
 			ID:          m.Sender.ID,
-			MorningTime: start.Format(reminderTimeFormat),
-			EveningTime: end.Format(reminderTimeFormat),
+			MorningTime: start.UTC().Format(reminderTimeFormat),
+			EveningTime: end.UTC().Format(reminderTimeFormat),
 		}
 		// TODO: do smth in case of failed save
 		user.SetReminders(db)

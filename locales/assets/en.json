@@ -10,6 +10,6 @@
   "week3": "Week 3:",
   "timeToBrush": "Hello! Time to brush your teeth 😉.",
   "greetingMessage": "👋 Hello there!\n\nDevelop a habit to brush \uD83E\uDDB7 in 21 days! I will send you reminders twice a day, you can also check your progress any time.\n\nType when you would like to receive reminders +timezone.\nExample \"/time 09:00 21:00 +02 \"",
-  "invalidInputTime": "⚠️Invalid input ⚠\nTry such format \"hh:mm hh:mm GMT Timezone\", for example \"09:00 21:00 +02\".",
+  "invalidInputTime": "⚠️Invalid input ⚠\nTry such format \"hh:mm hh:mm GMT Timezone\", for example \"/time 09:00 21:00 +02\".",
   "invalidInputLanguage": "😕 Wrong code!\nSuch languages are supported: uk 🇺🇦, en 🏴󠁧󠁢󠁥󠁮󠁧󠁿󠁿, ru 🇷🇺"
 }

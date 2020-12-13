@@ -13,7 +13,7 @@ const bunchSize = 100
 
 func GetReminderWatcher(db *pg.DB, bot *tb.Bot, approvalMarkup *tb.ReplyMarkup) func() {
 	return func() {
-		now := time.Now().Round(time.Minute).Format(reminderTimeFormat)
+		now := time.Now().Round(time.Minute).UTC().Format(reminderTimeFormat)
 		log.Println("Reminder watcher", now)
 		userModel := new(orm.User)
 
